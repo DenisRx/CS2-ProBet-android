@@ -27,10 +27,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = HomeViewModel()) {
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val homeUiState by viewModel.uiState.collectAsState()
 
     LeaderboardComponent(homeViewModel = viewModel, homeUiState = homeUiState)
