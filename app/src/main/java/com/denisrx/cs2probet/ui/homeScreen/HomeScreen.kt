@@ -10,8 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.RadioButtonChecked
-import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -30,11 +33,15 @@ import com.denisrx.cs2probet.R
 fun HomeScreen(viewModel: HomeViewModel = HomeViewModel()) {
     val homeUiState by viewModel.uiState.collectAsState()
 
-    LeaderboardComponent(homeUiState = homeUiState)
+    LeaderboardComponent(homeViewModel = viewModel, homeUiState = homeUiState)
 }
 
 @Composable
-fun LeaderboardComponent(homeUiState: HomeUiState, modifier: Modifier = Modifier) {
+fun LeaderboardComponent(
+    homeViewModel: HomeViewModel,
+    homeUiState: HomeUiState,
+    modifier: Modifier = Modifier
+) {
     val lazyListState = rememberLazyListState()
 
     Card {
@@ -43,6 +50,8 @@ fun LeaderboardComponent(homeUiState: HomeUiState, modifier: Modifier = Modifier
             modifier = modifier.padding(dimensionResource(R.dimen.list_content_padding))
         ) {
             items(homeUiState.leaderboard) { team ->
+                var checked by remember { mutableStateOf(team.isSelected) }
+
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = modifier
@@ -57,12 +66,15 @@ fun LeaderboardComponent(homeUiState: HomeUiState, modifier: Modifier = Modifier
                         }
                     }
                         Icon(
-                            imageVector = if (team.isSelected) Icons.Filled.RadioButtonChecked else Icons.Filled.RadioButtonUnchecked,
+                            imageVector = if (checked) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
                             contentDescription = stringResource(R.string.select_team_button),
                             tint = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.clickable(
-                                onClick = { /*TODO*/ },
-                                role = Role.Button,
+                                onClick = {
+                                    checked = !checked
+                                    homeViewModel.toggleSelectedTeam(team.id)
+                                },
+                                role = Role.Checkbox,
                             )
                         )
                 }
