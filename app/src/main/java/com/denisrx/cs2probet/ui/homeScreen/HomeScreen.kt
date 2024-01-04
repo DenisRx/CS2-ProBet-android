@@ -19,11 +19,11 @@ import com.denisrx.cs2probet.components.TeamListItem
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val homeUiState by viewModel.uiState.collectAsState()
 
-    LeaderboardComponent(homeViewModel = viewModel, homeUiState = homeUiState)
+    Leaderboard(homeViewModel = viewModel, homeUiState = homeUiState)
 }
 
 @Composable
-fun LeaderboardComponent(
+fun Leaderboard(
     homeViewModel: HomeViewModel,
     homeUiState: HomeUiState,
     modifier: Modifier = Modifier
