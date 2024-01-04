@@ -52,8 +52,9 @@ fun TeamListItem(
             tint = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.clickable(
                 onClick = {
-                    checked = !checked
-                    homeViewModel.toggleSelectedTeam(team.id)
+                    if (homeViewModel.toggleSelectedTeam(team.id) != null) {
+                        checked = !checked
+                    }
                 },
                 role = Role.Checkbox,
             )

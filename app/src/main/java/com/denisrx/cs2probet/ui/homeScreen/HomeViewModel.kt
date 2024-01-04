@@ -24,16 +24,31 @@ class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(leaderboardData))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    fun toggleSelectedTeam(teamId: Int) {
+    private val maxSelectableTeams = 3
+
+    fun toggleSelectedTeam(teamId: Int): Boolean? {
+        var newSelectionState: Boolean? = null
+
         _uiState.update {  currentState ->
             val updatedLeaderboard = currentState.leaderboard.map { team ->
                 if (team.id == teamId) {
-                    team.copy(isSelected = !team.isSelected)
+                    // Handle max selections
+                    if (!team.isSelected && getSelectedTeams().count() == maxSelectableTeams)
+                        return null
+
+                    newSelectionState = !team.isSelected
+                    team.copy(isSelected = newSelectionState!!)
                 } else {
                     team
                 }
             }
             currentState.copy(leaderboard = updatedLeaderboard)
         }
+
+        return newSelectionState
+    }
+
+    private fun getSelectedTeams(): List<Team> {
+        return _uiState.value.leaderboard.filter { it.isSelected }
     }
 }
