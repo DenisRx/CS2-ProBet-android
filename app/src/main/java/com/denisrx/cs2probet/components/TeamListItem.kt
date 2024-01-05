@@ -18,6 +18,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -42,7 +44,10 @@ fun TeamListItem(
         Column {
             Row(horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))) {
                 Text(text = "#${team.place}")
-                Text(team.change.toString())
+                Text(
+                    text = formatRankChange(team.change),
+                    color = determineRankChangeColor(team.change),
+                )
                 Text(team.name)
             }
         }
@@ -59,5 +64,24 @@ fun TeamListItem(
                 role = Role.Checkbox,
             )
         )
+    }
+}
+
+fun formatRankChange(value: Int): String {
+    return if (value > 0) {
+        "+$value"
+    } else {
+        value.toString()
+    }
+}
+
+@Composable
+fun determineRankChangeColor(value: Int): Color {
+    return if (value > 0) {
+        colorResource(R.color.custom_green)
+    } else if (value < 0) {
+        Color.Red
+    } else {
+        Color.Gray
     }
 }
