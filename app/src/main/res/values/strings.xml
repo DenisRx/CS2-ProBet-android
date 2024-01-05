@@ -3,4 +3,6 @@
     <string name="select_team_button">Select team</string>
     <string name="confirm_button_content">Confirm</string>
     <string name="edit_button_content">Edit</string>
+    <string name="leaderboard_loading_failed">Failed to load leaderboard</string>
+    <string name="connection_error_icon_label">Connection error image</string>
 </resources>
