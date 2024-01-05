@@ -1,5 +1,8 @@
 package com.denisrx.cs2probet.ui.homeScreen
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denisrx.cs2probet.model.Team
@@ -30,6 +33,8 @@ class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(leaderboardData))
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Loading)
+        private set
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
@@ -71,15 +76,15 @@ class HomeViewModel : ViewModel() {
 
     private fun fetchLeaderboard() {
         viewModelScope.launch {
-            try {
-                val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard().asDomainObjects()
+            leaderboardApiState = try {
+                val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard()
                 _uiState.update { currentState ->
-                    currentState.copy(
-                        leaderboard = leaderboardResult
-                    )
+                    currentState.copy(leaderboard = leaderboardResult.asDomainObjects())
                 }
+                LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
             } catch (e: IOException) {
                 println("Failed to fetch leaderboard.")
+                LeaderboardApiState.Error
             }
         }
     }
