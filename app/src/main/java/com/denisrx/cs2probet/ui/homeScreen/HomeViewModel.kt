@@ -1,11 +1,16 @@
 package com.denisrx.cs2probet.ui.homeScreen
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.denisrx.cs2probet.model.Team
+import com.denisrx.cs2probet.network.LeaderboardApi
+import com.denisrx.cs2probet.network.asDomainObjects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.io.IOException
 
 class HomeViewModel : ViewModel() {
     private val leaderboardData = listOf(
@@ -62,5 +67,20 @@ class HomeViewModel : ViewModel() {
 
     private fun getSelectedTeams(): List<Team> {
         return _uiState.value.leaderboard.filter { it.isSelected }
+    }
+
+    private fun fetchLeaderboard() {
+        viewModelScope.launch {
+            try {
+                val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard().asDomainObjects()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        leaderboard = leaderboardResult
+                    )
+                }
+            } catch (e: IOException) {
+                println("Failed to fetch leaderboard.")
+            }
+        }
     }
 }
