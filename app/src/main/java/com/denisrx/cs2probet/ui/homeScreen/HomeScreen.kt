@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.components.TeamListItem
+import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
 import com.denisrx.cs2probet.ui.loadingScreen.LoadingScreen
 
@@ -141,5 +142,8 @@ fun EditionButtons(
 @Preview
 @Composable
 fun HomeScreenContentPreview() {
-    HomeScreenContent(homeViewModel = viewModel(), homeUiState = HomeUiState())
+    HomeScreenContent(
+        homeViewModel = viewModel(),
+        homeUiState = HomeUiState(LeaderboardSampler.leaderboard),
+    )
 }

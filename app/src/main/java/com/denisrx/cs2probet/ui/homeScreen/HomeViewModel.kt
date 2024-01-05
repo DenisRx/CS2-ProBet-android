@@ -18,11 +18,15 @@ import java.io.IOException
 
 class HomeViewModel : ViewModel() {
     private val maxSelectableTeams = 3
-    private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
+    private val _uiState = MutableStateFlow(HomeUiState())
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Loading)
         private set
+
+    init {
+        fetchLeaderboard()
+    }
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
