@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.model.Team
 import com.denisrx.cs2probet.network.LeaderboardApi
 import com.denisrx.cs2probet.network.asDomainObjects
@@ -75,7 +74,7 @@ class HomeViewModel : ViewModel() {
                 }
                 LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
             } catch (e: IOException) {
-                println("Failed to fetch leaderboard.")
+                println("Failed to fetch leaderboard: $e")
                 LeaderboardApiState.Error
             }
         }
