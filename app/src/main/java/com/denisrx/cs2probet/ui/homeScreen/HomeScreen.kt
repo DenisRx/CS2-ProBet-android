@@ -133,5 +133,5 @@ fun EditionButtons(
 @Preview
 @Composable
 fun HomeScreenContentPreview() {
-//    HomeScreenContent()
+    HomeScreenContent(homeViewModel = viewModel(), homeUiState = HomeUiState())
 }

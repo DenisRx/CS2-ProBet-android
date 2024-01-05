@@ -7,5 +7,5 @@ data class Team(
     val id: Int,
     val change: Int,
     val isNew: Boolean,
-    val isSelected: Boolean,
+    val isSelected: Boolean = false,
 )
