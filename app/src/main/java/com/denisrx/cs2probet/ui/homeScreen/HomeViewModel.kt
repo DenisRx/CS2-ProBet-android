@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.model.Team
 import com.denisrx.cs2probet.network.LeaderboardApi
 import com.denisrx.cs2probet.network.asDomainObjects
@@ -17,15 +18,15 @@ import java.io.IOException
 
 class HomeViewModel : ViewModel() {
     private val maxSelectableTeams = 3
-    private val _uiState = MutableStateFlow(HomeUiState())
+    private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-    var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Loading)
+    var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Success(LeaderboardSampler.leaderboard))
         private set
 
-    init {
-        fetchLeaderboard()
-    }
+//    init {
+//        fetchLeaderboard()
+//    }
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
