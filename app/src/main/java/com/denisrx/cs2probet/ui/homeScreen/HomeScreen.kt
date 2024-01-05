@@ -2,6 +2,7 @@ package com.denisrx.cs2probet.ui.homeScreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.components.TeamListItem
+import com.denisrx.cs2probet.ui.loadingScreen.LoadingScreen
 
 @Composable
 fun HomeScreen(
@@ -34,8 +36,12 @@ fun HomeScreen(
 
     when(homeViewModel.leaderboardApiState) {
         LeaderboardApiState.Error -> Text("Couldn't fetch leaderboard...")
-        LeaderboardApiState.Loading -> Text("Loading...")
-        is LeaderboardApiState.Success -> HomeScreenContent(homeViewModel, homeUiState, modifier)
+        LeaderboardApiState.Loading -> LoadingScreen()
+        is LeaderboardApiState.Success -> HomeScreenContent(
+            homeViewModel = homeViewModel,
+            homeUiState = homeUiState,
+            modifier = modifier.fillMaxWidth(),
+        )
     }
 }
 
