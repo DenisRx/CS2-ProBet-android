@@ -3,9 +3,9 @@ package com.denisrx.cs2probet.ui.homeScreen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -43,7 +43,7 @@ fun HomeScreen(
         is LeaderboardApiState.Success -> HomeScreenContent(
             homeViewModel = homeViewModel,
             homeUiState = homeUiState,
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxSize(),
         )
     }
 }
@@ -58,17 +58,22 @@ fun HomeScreenContent(
         modifier = modifier.padding(dimensionResource(R.dimen.app_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Leaderboard(
-            homeViewModel = homeViewModel,
-            homeUiState = homeUiState,
-            modifier = modifier,
-        )
-
-        EditionButtons(
-            homeViewModel = homeViewModel,
-            homeUiState = homeUiState,
-            modifier = modifier,
-        )
+        Row(modifier = Modifier.weight(1f)) {
+            Leaderboard(
+                homeViewModel = homeViewModel,
+                homeUiState = homeUiState,
+            )
+        }
+        Row(
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.medium_padding))
+                .wrapContentHeight()
+        ) {
+            EditionButtons(
+                homeViewModel = homeViewModel,
+                homeUiState = homeUiState,
+            )
+        }
     }
 }
 
@@ -85,7 +90,7 @@ fun Leaderboard(
             state = lazyListState,
             modifier = modifier.padding(dimensionResource(R.dimen.list_content_padding))
         ) {
-            items(homeUiState.leaderboard) {
+            items(homeUiState.leaderboard, key = { it.id }) {
                 TeamListItem(
                     team = it,
                     homeViewModel = homeViewModel,
@@ -102,39 +107,37 @@ fun EditionButtons(
     homeUiState: HomeUiState,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier.padding(dimensionResource(R.dimen.medium_padding))) {
-        if (homeUiState.isEditing) {
-            ElevatedButton(
-                onClick = { homeViewModel.confirmSelection() },
-                colors = ButtonDefaults.elevatedButtonColors(
-                    containerColor = colorResource(R.color.custom_green),
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                modifier = modifier.size(
-                    width = dimensionResource(R.dimen.elevated_buttons_width),
-                    height = dimensionResource(R.dimen.elevated_buttons_height),
-                ),
-            ) {
-                Text(stringResource(R.string.confirm_button_content))
-            }
-        } else {
-            ElevatedButton(
-                onClick = { homeViewModel.editSelection() },
-                colors = ButtonDefaults.elevatedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                elevation = ButtonDefaults.elevatedButtonElevation(
-                    defaultElevation = dimensionResource(R.dimen.elevated_buttons_default_elevation),
-                    pressedElevation = dimensionResource(R.dimen.elevated_buttons_pressed_elevation),
-                ),
-                modifier = modifier.size(
-                    width = dimensionResource(R.dimen.elevated_buttons_width),
-                    height = dimensionResource(R.dimen.elevated_buttons_height),
-                ),
-            ) {
-                Text(stringResource(R.string.edit_button_content))
-            }
+    if (homeUiState.isEditing) {
+        ElevatedButton(
+            onClick = { homeViewModel.confirmSelection() },
+            colors = ButtonDefaults.elevatedButtonColors(
+                containerColor = colorResource(R.color.custom_green),
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
+            modifier = modifier.size(
+                width = dimensionResource(R.dimen.elevated_buttons_width),
+                height = dimensionResource(R.dimen.elevated_buttons_height),
+            ),
+        ) {
+            Text(stringResource(R.string.confirm_button_content))
+        }
+    } else {
+        ElevatedButton(
+            onClick = { homeViewModel.editSelection() },
+            colors = ButtonDefaults.elevatedButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = dimensionResource(R.dimen.elevated_buttons_default_elevation),
+                pressedElevation = dimensionResource(R.dimen.elevated_buttons_pressed_elevation),
+            ),
+            modifier = modifier.size(
+                width = dimensionResource(R.dimen.elevated_buttons_width),
+                height = dimensionResource(R.dimen.elevated_buttons_height),
+            ),
+        ) {
+            Text(stringResource(R.string.edit_button_content))
         }
     }
 }
