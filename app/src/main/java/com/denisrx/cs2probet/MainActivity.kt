@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.denisrx.cs2probet.ui.homeScreen.HomeScreen
+import com.denisrx.cs2probet.ui.CS2ProBetApp
 import com.denisrx.cs2probet.ui.theme.CS2ProBetTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    HomeScreen()
+                    CS2ProBetApp()
                 }
             }
         }

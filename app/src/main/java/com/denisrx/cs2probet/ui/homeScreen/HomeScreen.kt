@@ -11,7 +11,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,19 +26,25 @@ import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.components.TeamListItem
 
 @Composable
-fun HomeScreen() {
-    Scaffold { innerPadding ->
-        HomeScreenContent(modifier = Modifier.padding(innerPadding))
-    }
-}
-
-@Composable
-fun HomeScreenContent(
+fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
 
+    when(homeViewModel.leaderboardApiState) {
+        LeaderboardApiState.Error -> Text("Couldn't fetch leaderboard...")
+        LeaderboardApiState.Loading -> Text("Loading...")
+        is LeaderboardApiState.Success -> HomeScreenContent(homeViewModel, homeUiState, modifier)
+    }
+}
+
+@Composable
+fun HomeScreenContent(
+    homeViewModel: HomeViewModel,
+    homeUiState: HomeUiState,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier.padding(dimensionResource(R.dimen.app_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -127,6 +132,6 @@ fun EditionButtons(
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
-    HomeScreenContent()
+fun HomeScreenContentPreview() {
+//    HomeScreenContent()
 }
