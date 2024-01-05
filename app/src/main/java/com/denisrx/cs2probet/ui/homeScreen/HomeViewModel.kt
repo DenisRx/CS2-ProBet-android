@@ -21,10 +21,10 @@ class HomeViewModel : ViewModel() {
         Team(points = 288, place = 10, name = "Falcons", id = 11283, change = 0, isNew = false, isSelected = false),
     )
 
-    private val _uiState = MutableStateFlow(HomeUiState(leaderboardData))
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-
     private val maxSelectableTeams = 3
+    private val _uiState = MutableStateFlow(HomeUiState(leaderboardData))
+
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
@@ -46,6 +46,18 @@ class HomeViewModel : ViewModel() {
         }
 
         return newSelectionState
+    }
+
+    fun editSelection() {
+        _uiState.update { currentState ->
+            currentState.copy(isEditing = true)
+        }
+    }
+
+    fun confirmSelection() {
+        _uiState.update { currentState ->
+            currentState.copy(isEditing = false)
+        }
     }
 
     private fun getSelectedTeams(): List<Team> {

@@ -25,12 +25,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.model.Team
+import com.denisrx.cs2probet.ui.homeScreen.HomeUiState
 import com.denisrx.cs2probet.ui.homeScreen.HomeViewModel
 
 @Composable
 fun TeamListItem(
     team: Team,
     homeViewModel: HomeViewModel,
+    homeUiState: HomeUiState,
     modifier: Modifier = Modifier,
 ) {
     var checked by remember { mutableStateOf(team.isSelected) }
@@ -56,6 +58,7 @@ fun TeamListItem(
             contentDescription = stringResource(R.string.select_team_button),
             tint = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.clickable(
+                enabled = homeUiState.isEditing,
                 onClick = {
                     if (homeViewModel.toggleSelectedTeam(team.id) != null) {
                         checked = !checked
