@@ -28,13 +28,14 @@ import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.R.dimen.medium_padding
 import com.denisrx.cs2probet.components.TeamListItem
 import com.denisrx.cs2probet.data.LeaderboardSampler
+import com.denisrx.cs2probet.ui.AppViewModelProvider
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
 import com.denisrx.cs2probet.ui.loadingScreen.LoadingScreen
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
 
