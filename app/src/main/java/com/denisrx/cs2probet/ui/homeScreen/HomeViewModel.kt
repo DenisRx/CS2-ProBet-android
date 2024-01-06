@@ -22,12 +22,12 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-    var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Success(LeaderboardSampler.leaderboard))
+    var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Loading)
         private set
 
-//    init {
-//        fetchLeaderboard()
-//    }
+    init {
+        loadLeaderboard()
+    }
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
@@ -78,6 +78,17 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
             } catch (e: IOException) {
                 println("Failed to fetch leaderboard: $e")
                 LeaderboardApiState.Error
+            }
+        }
+    }
+
+    private fun loadLeaderboard() {
+        viewModelScope.launch {
+            teamsRepository.getTeams().collect { savedLeaderboard ->
+                _uiState.update { currentState ->
+                    currentState.copy(leaderboard = savedLeaderboard)
+                }
+                leaderboardApiState = LeaderboardApiState.Success(_uiState.value.leaderboard)
             }
         }
     }
