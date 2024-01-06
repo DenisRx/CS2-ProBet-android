@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denisrx.cs2probet.data.LeaderboardSampler
+import com.denisrx.cs2probet.data.TeamRepository
 import com.denisrx.cs2probet.model.Team
 import com.denisrx.cs2probet.network.LeaderboardApi
 import com.denisrx.cs2probet.network.asDomainObjects
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
     private val maxSelectableTeams = 3
     private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
 
