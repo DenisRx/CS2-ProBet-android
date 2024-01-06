@@ -85,10 +85,12 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
     private fun loadLeaderboard() {
         viewModelScope.launch {
             teamsRepository.getTeams().collect { savedLeaderboard ->
-                _uiState.update { currentState ->
-                    currentState.copy(leaderboard = savedLeaderboard)
+                if (savedLeaderboard.isNotEmpty()) {
+                    _uiState.update { currentState ->
+                        currentState.copy(leaderboard = savedLeaderboard)
+                    }
+                    leaderboardApiState = LeaderboardApiState.Success(_uiState.value.leaderboard)
                 }
-                leaderboardApiState = LeaderboardApiState.Success(_uiState.value.leaderboard)
             }
         }
     }
