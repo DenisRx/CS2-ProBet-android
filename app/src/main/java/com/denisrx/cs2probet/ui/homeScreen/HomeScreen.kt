@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
+import com.denisrx.cs2probet.R.dimen.medium_padding
 import com.denisrx.cs2probet.components.TeamListItem
 import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
@@ -58,6 +59,16 @@ fun HomeScreenContent(
         modifier = modifier.padding(dimensionResource(R.dimen.app_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Row(
+            modifier = Modifier
+                .padding(bottom = dimensionResource(R.dimen.large_padding))
+                .wrapContentHeight()
+        ) {
+            Text(
+                text ="Score: ${homeUiState.score}",
+                style = MaterialTheme.typography.titleLarge,
+            )
+        }
         Row(modifier = Modifier.weight(1f)) {
             Leaderboard(
                 homeViewModel = homeViewModel,
@@ -66,7 +77,7 @@ fun HomeScreenContent(
         }
         Row(
             modifier = Modifier
-                .padding(dimensionResource(R.dimen.medium_padding))
+                .padding(top = dimensionResource(medium_padding))
                 .wrapContentHeight()
         ) {
             EditionButtons(
