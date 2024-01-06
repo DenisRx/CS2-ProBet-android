@@ -17,9 +17,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import kotlin.math.abs
 
 class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
     private val maxSelectableTeams = 3
+    private val correctPredictionPoints = 15
+    private val wrongPredictionPoints = -5
     private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -34,7 +37,7 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
 
-        _uiState.update {  currentState ->
+        _uiState.update { currentState ->
             val updatedLeaderboard = currentState.leaderboard.map { team ->
                 if (team.id == teamId) {
                     // Handle max selections
@@ -100,10 +103,45 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         viewModelScope.async { fetchLeaderboard() }.await()
 
         if (leaderboardApiState is LeaderboardApiState.Success) {
-            // compare leaderboard
-            // update score
-            // update ui state
-            saveLeaderboard()
+            val newLeaderboard = (leaderboardApiState as LeaderboardApiState.Success).leaderboard
+            if (!compareLeaderboard(newLeaderboard)) {
+                updateScore(newLeaderboard)
+                _uiState.update { currentState -> currentState.copy(leaderboard = newLeaderboard) }
+                saveLeaderboard()
+            }
+        }
+    }
+
+    private fun compareLeaderboard(newLeaderboard: List<Team>): Boolean {
+        return newLeaderboard == _uiState.value.leaderboard
+    }
+
+    private fun updateScore(newLeaderboard: List<Team>) {
+        var scoreEvolution = 0
+
+        viewModelScope.launch {
+            teamsRepository.getTeams().collect { savedLeaderboard ->
+                savedLeaderboard
+                    .filter { it.isSelected }
+                    .forEach { team ->
+                        scoreEvolution += if (!newLeaderboard.map { it.id }.contains(team.id)) {
+                            (newLeaderboard.count() - team.place + 1) * wrongPredictionPoints
+                        } else {
+                            newLeaderboard
+                                .find { it.id == team.id }!!.change
+                                .let { teamChange ->
+                                    if (teamChange >= 0) teamChange * correctPredictionPoints
+                                    else abs(teamChange) * wrongPredictionPoints
+                            }
+                        }
+                    }
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        score = currentState.score + scoreEvolution,
+                        scoreEvolution = scoreEvolution,
+                    )
+                }
+            }
         }
     }
 }

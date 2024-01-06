@@ -12,4 +12,5 @@ data class HomeUiState(
     val leaderboard: List<Team> = emptyList(),
     val isEditing: Boolean = false,
     val score: Int = 0,
+    val scoreEvolution: Int = 0,
 )
