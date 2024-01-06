@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.R.dimen.medium_padding
 import com.denisrx.cs2probet.components.TeamListItem
+import com.denisrx.cs2probet.components.formatRankChange
 import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.ui.AppViewModelProvider
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
@@ -65,10 +66,7 @@ fun HomeScreenContent(
                 .padding(bottom = dimensionResource(R.dimen.large_padding))
                 .wrapContentHeight()
         ) {
-            Text(
-                text ="Score: ${homeUiState.score}",
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Scores(homeUiState)
         }
         Row(modifier = Modifier.weight(1f)) {
             Leaderboard(
@@ -151,6 +149,32 @@ fun EditionButtons(
         ) {
             Text(stringResource(R.string.edit_button_content))
         }
+    }
+}
+
+@Composable
+fun Scores(homeUiState: HomeUiState) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row {
+            Text(
+                text = stringResource(R.string.score, homeUiState.score),
+                style = MaterialTheme.typography.titleLarge,
+            )
+        }
+        Row {
+            Text(
+                text = "${formatScoreEvolution(homeUiState.scoreEvolution)} points this week",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+    }
+}
+
+private fun formatScoreEvolution(value: Int): String {
+    return if (value >= 0) {
+        "+$value"
+    } else {
+        value.toString()
     }
 }
 

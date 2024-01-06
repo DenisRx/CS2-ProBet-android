@@ -5,4 +5,5 @@
     <string name="edit_button_content">Edit</string>
     <string name="leaderboard_loading_failed">Failed to load leaderboard</string>
     <string name="connection_error_icon_label">Connection error image</string>
+    <string name="score">Score: %1$s</string>
 </resources>
