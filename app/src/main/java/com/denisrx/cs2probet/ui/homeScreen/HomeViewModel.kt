@@ -10,6 +10,7 @@ import com.denisrx.cs2probet.data.TeamRepository
 import com.denisrx.cs2probet.model.Team
 import com.denisrx.cs2probet.network.LeaderboardApi
 import com.denisrx.cs2probet.network.asDomainObjects
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,7 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
 
     init {
         loadLeaderboard()
+        viewModelScope.launch { updateLeaderboard() }
     }
 
     fun toggleSelectedTeam(teamId: Int): Boolean? {
@@ -67,18 +69,13 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         return _uiState.value.leaderboard.filter { it.isSelected }
     }
 
-    private fun fetchLeaderboard() {
-        viewModelScope.launch {
-            leaderboardApiState = try {
-                val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard()
-                _uiState.update { currentState ->
-                    currentState.copy(leaderboard = leaderboardResult.asDomainObjects())
-                }
-                LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
-            } catch (e: IOException) {
-                println("Failed to fetch leaderboard: $e")
-                LeaderboardApiState.Error
-            }
+    private suspend fun fetchLeaderboard() {
+        leaderboardApiState = try {
+            val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard()
+            LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
+        } catch (e: IOException) {
+            println("Failed to fetch leaderboard: $e")
+            LeaderboardApiState.Error
         }
     }
 
@@ -95,9 +92,18 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         }
     }
 
-    private fun saveLeaderboard() {
-        viewModelScope.launch {
-            teamsRepository.replaceTeams(_uiState.value.leaderboard)
+    private suspend fun saveLeaderboard() {
+        teamsRepository.replaceTeams(_uiState.value.leaderboard)
+    }
+
+    private suspend fun updateLeaderboard() {
+        viewModelScope.async { fetchLeaderboard() }.await()
+
+        if (leaderboardApiState is LeaderboardApiState.Success) {
+            // compare leaderboard
+            // update score
+            // update ui state
+            saveLeaderboard()
         }
     }
 }
