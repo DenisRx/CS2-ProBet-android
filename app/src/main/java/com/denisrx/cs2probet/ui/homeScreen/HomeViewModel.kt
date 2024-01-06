@@ -81,4 +81,10 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
             }
         }
     }
+
+    private fun saveLeaderboard() {
+        viewModelScope.launch {
+            teamsRepository.replaceTeams(_uiState.value.leaderboard)
+        }
+    }
 }

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,5 +16,11 @@ interface TeamDao {
     fun getAll(): Flow<List<TeamEntity>>
 
     @Query("DELETE FROM teams")
-    fun deleteAll()
+    suspend fun deleteAll()
+
+    @Transaction
+    suspend fun replaceAll(teams: List<TeamEntity>) {
+        deleteAll()
+        saveAll(teams)
+    }
 }
