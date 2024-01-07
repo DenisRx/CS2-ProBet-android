@@ -13,12 +13,12 @@ data class Team(
         if (this === other) return true
         if (other !is Team) return false
 
-        return points == other.points
-                && place == other.place
-                && name == other.name
-                && id == other.id
-                && change == other.change
-                && isNew == other.isNew
+        return points == other.points &&
+            place == other.place &&
+            name == other.name &&
+            id == other.id &&
+            change == other.change &&
+            isNew == other.isNew
     }
 
     override fun hashCode(): Int {

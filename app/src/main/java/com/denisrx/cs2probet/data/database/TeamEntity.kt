@@ -23,15 +23,16 @@ data class TeamEntity(
  * Convert a [Team] to a [TeamEntity]
  * @return The converted [TeamEntity]
  */
-fun Team.asTeamEntity(): TeamEntity = TeamEntity(
-    id = this.id,
-    points = this.points,
-    place = this.place,
-    name = this.name,
-    change = this.change,
-    isNew = this.isNew,
-    isSelected = this.isSelected,
-)
+fun Team.asTeamEntity(): TeamEntity =
+    TeamEntity(
+        id = this.id,
+        points = this.points,
+        place = this.place,
+        name = this.name,
+        change = this.change,
+        isNew = this.isNew,
+        isSelected = this.isSelected,
+    )
 
 /**
  * Convert list of [Team] to a list of [TeamEntity]
@@ -39,20 +40,20 @@ fun Team.asTeamEntity(): TeamEntity = TeamEntity(
  */
 fun List<Team>.asTeamEntityList(): List<TeamEntity> = this.map { it.asTeamEntity() }
 
-
 /**
  * Convert [TeamEntity] to [Team]
  * @return The converted [Team]
  */
-fun TeamEntity.asTeam(): Team = Team(
-    id = this.id,
-    points = this.points,
-    place = this.place,
-    name = this.name,
-    change = this.change,
-    isNew = this.isNew,
-    isSelected = this.isSelected,
-)
+fun TeamEntity.asTeam(): Team =
+    Team(
+        id = this.id,
+        points = this.points,
+        place = this.place,
+        name = this.name,
+        change = this.change,
+        isNew = this.isNew,
+        isSelected = this.isSelected,
+    )
 
 /**
  * Convert list of [TeamEntity] to a list of [Team]

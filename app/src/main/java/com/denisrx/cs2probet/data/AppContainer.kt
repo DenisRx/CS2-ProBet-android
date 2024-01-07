@@ -9,6 +9,6 @@ interface AppContainer {
 
 class DefaultAppContainer(private val context: Context) : AppContainer {
     override val teamRepository: TeamRepository by lazy {
-        CachingTeamRepository(TeamDatabase.getDatabase(context = context).teamDao(), context)
+        CachingTeamRepository(TeamDatabase.getDatabase(context = context).teamDao())
     }
 }

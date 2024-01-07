@@ -27,7 +27,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.denisrx.cs2probet.R
 import com.denisrx.cs2probet.R.dimen.medium_padding
 import com.denisrx.cs2probet.components.TeamListItem
-import com.denisrx.cs2probet.components.formatRankChange
 import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.ui.AppViewModelProvider
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
@@ -40,14 +39,15 @@ fun HomeScreen(
 ) {
     val homeUiState by homeViewModel.uiState.collectAsState()
 
-    when(homeViewModel.leaderboardApiState) {
+    when (homeViewModel.leaderboardApiState) {
         LeaderboardApiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize())
         LeaderboardApiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
-        is LeaderboardApiState.Success -> HomeScreenContent(
-            homeViewModel = homeViewModel,
-            homeUiState = homeUiState,
-            modifier = modifier.fillMaxSize(),
-        )
+        is LeaderboardApiState.Success ->
+            HomeScreenContent(
+                homeViewModel = homeViewModel,
+                homeUiState = homeUiState,
+                modifier = modifier.fillMaxSize(),
+            )
     }
 }
 
@@ -62,9 +62,10 @@ fun HomeScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            modifier = Modifier
-                .padding(bottom = dimensionResource(R.dimen.large_padding))
-                .wrapContentHeight()
+            modifier =
+                Modifier
+                    .padding(bottom = dimensionResource(R.dimen.large_padding))
+                    .wrapContentHeight(),
         ) {
             Scores(homeUiState)
         }
@@ -75,9 +76,10 @@ fun HomeScreenContent(
             )
         }
         Row(
-            modifier = Modifier
-                .padding(top = dimensionResource(medium_padding))
-                .wrapContentHeight()
+            modifier =
+                Modifier
+                    .padding(top = dimensionResource(medium_padding))
+                    .wrapContentHeight(),
         ) {
             EditionButtons(
                 homeViewModel = homeViewModel,
@@ -91,14 +93,14 @@ fun HomeScreenContent(
 fun Leaderboard(
     homeViewModel: HomeViewModel,
     homeUiState: HomeUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lazyListState = rememberLazyListState()
 
     Card {
         LazyColumn(
             state = lazyListState,
-            modifier = modifier.padding(dimensionResource(R.dimen.list_content_padding))
+            modifier = modifier.padding(dimensionResource(R.dimen.list_content_padding)),
         ) {
             items(homeUiState.leaderboard, key = { it.id }) {
                 TeamListItem(
@@ -120,32 +122,37 @@ fun EditionButtons(
     if (homeUiState.isEditing) {
         ElevatedButton(
             onClick = { homeViewModel.confirmSelection() },
-            colors = ButtonDefaults.elevatedButtonColors(
-                containerColor = colorResource(R.color.custom_green),
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ),
-            modifier = modifier.size(
-                width = dimensionResource(R.dimen.elevated_buttons_width),
-                height = dimensionResource(R.dimen.elevated_buttons_height),
-            ),
+            colors =
+                ButtonDefaults.elevatedButtonColors(
+                    containerColor = colorResource(R.color.custom_green),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            modifier =
+                modifier.size(
+                    width = dimensionResource(R.dimen.elevated_buttons_width),
+                    height = dimensionResource(R.dimen.elevated_buttons_height),
+                ),
         ) {
             Text(stringResource(R.string.confirm_button_content))
         }
     } else {
         ElevatedButton(
             onClick = { homeViewModel.editSelection() },
-            colors = ButtonDefaults.elevatedButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ),
-            elevation = ButtonDefaults.elevatedButtonElevation(
-                defaultElevation = dimensionResource(R.dimen.elevated_buttons_default_elevation),
-                pressedElevation = dimensionResource(R.dimen.elevated_buttons_pressed_elevation),
-            ),
-            modifier = modifier.size(
-                width = dimensionResource(R.dimen.elevated_buttons_width),
-                height = dimensionResource(R.dimen.elevated_buttons_height),
-            ),
+            colors =
+                ButtonDefaults.elevatedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            elevation =
+                ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = dimensionResource(R.dimen.elevated_buttons_default_elevation),
+                    pressedElevation = dimensionResource(R.dimen.elevated_buttons_pressed_elevation),
+                ),
+            modifier =
+                modifier.size(
+                    width = dimensionResource(R.dimen.elevated_buttons_width),
+                    height = dimensionResource(R.dimen.elevated_buttons_height),
+                ),
         ) {
             Text(stringResource(R.string.edit_button_content))
         }

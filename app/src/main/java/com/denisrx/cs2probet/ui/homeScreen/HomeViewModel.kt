@@ -49,18 +49,20 @@ class HomeViewModel(
         var newSelectionState: Boolean? = null
 
         _uiState.update { currentState ->
-            val updatedLeaderboard = currentState.leaderboard.map { team ->
-                if (team.id == teamId) {
-                    // Handle max selections
-                    if (!team.isSelected && getSelectedTeams().count() == maxSelectableTeams)
-                        return null
+            val updatedLeaderboard =
+                currentState.leaderboard.map { team ->
+                    if (team.id == teamId) {
+                        // Handle max selections
+                        if (!team.isSelected && getSelectedTeams().count() == maxSelectableTeams) {
+                            return null
+                        }
 
-                    newSelectionState = !team.isSelected
-                    team.copy(isSelected = newSelectionState!!)
-                } else {
-                    team
+                        newSelectionState = !team.isSelected
+                        team.copy(isSelected = newSelectionState!!)
+                    } else {
+                        team
+                    }
                 }
-            }
             currentState.copy(leaderboard = updatedLeaderboard)
         }
 
@@ -85,13 +87,14 @@ class HomeViewModel(
     }
 
     private suspend fun fetchLeaderboard() {
-        leaderboardApiState = try {
-            val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard()
-            LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
-        } catch (e: IOException) {
-            println("Failed to fetch leaderboard: $e")
-            LeaderboardApiState.Error
-        }
+        leaderboardApiState =
+            try {
+                val leaderboardResult = LeaderboardApi.retrofitService.getLeaderboard()
+                LeaderboardApiState.Success(leaderboardResult.asDomainObjects())
+            } catch (e: IOException) {
+                println("Failed to fetch leaderboard: $e")
+                LeaderboardApiState.Error
+            }
     }
 
     private fun loadLeaderboard() {
@@ -136,16 +139,20 @@ class HomeViewModel(
                 savedLeaderboard
                     .filter { it.isSelected }
                     .forEach { team ->
-                        scoreEvolution += if (!newLeaderboard.map { it.id }.contains(team.id)) {
-                            (newLeaderboard.count() - team.place + 1) * wrongPredictionPoints
-                        } else {
-                            newLeaderboard
-                                .find { it.id == team.id }!!.change
-                                .let { teamChange ->
-                                    if (teamChange >= 0) teamChange * correctPredictionPoints
-                                    else abs(teamChange) * wrongPredictionPoints
+                        scoreEvolution +=
+                            if (!newLeaderboard.map { it.id }.contains(team.id)) {
+                                (newLeaderboard.count() - team.place + 1) * wrongPredictionPoints
+                            } else {
+                                newLeaderboard
+                                    .find { it.id == team.id }!!.change
+                                    .let { teamChange ->
+                                        if (teamChange >= 0) {
+                                            teamChange * correctPredictionPoints
+                                        } else {
+                                            abs(teamChange) * wrongPredictionPoints
+                                        }
+                                    }
                             }
-                        }
                     }
                 _uiState.update { currentState ->
                     currentState.copy(

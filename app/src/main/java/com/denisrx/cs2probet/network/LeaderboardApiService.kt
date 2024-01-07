@@ -5,13 +5,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://hltv-leaderboard-fetcher-830d3fdbc2b1.herokuapp.com"
-private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .addConverterFactory(GsonConverterFactory.create())
-    .build()
+private val retrofit =
+    Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-object LeaderboardApi{
-    val retrofitService : LeaderboardApiService by lazy {
+object LeaderboardApi {
+    val retrofitService: LeaderboardApiService by lazy {
         retrofit.create(LeaderboardApiService::class.java)
     }
 }

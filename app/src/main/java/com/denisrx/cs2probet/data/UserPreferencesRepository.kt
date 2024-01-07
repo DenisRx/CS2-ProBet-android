@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.first
 
 class UserPreferencesRepository(
-    private val dataStore: DataStore<Preferences>
-){
+    private val dataStore: DataStore<Preferences>,
+) {
     suspend fun getScore(): Int = dataStore.data.first().let { it[SCORE] ?: 0 }
 
     suspend fun getScoreEvolution(): Int = dataStore.data.first().let { it[SCORE_EVOLUTION] ?: 0 }

@@ -23,9 +23,10 @@ fun AboutScreen(modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(dimensionResource(R.dimen.app_padding)),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(dimensionResource(R.dimen.app_padding)),
     ) {
         Text(
             text = stringResource(R.string.app_name),
@@ -36,9 +37,10 @@ fun AboutScreen(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(R.drawable.logo_full),
             contentDescription = stringResource(R.string.application_logo_description),
-            modifier = Modifier
-                .padding(dimensionResource(R.dimen.large_padding))
-                .size(dimensionResource(R.dimen.logo_size_about_screen))
+            modifier =
+                Modifier
+                    .padding(dimensionResource(R.dimen.large_padding))
+                    .size(dimensionResource(R.dimen.logo_size_about_screen)),
         )
 
         LazyColumn {

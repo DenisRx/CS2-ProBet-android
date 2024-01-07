@@ -39,9 +39,10 @@ fun TeamListItem(
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .padding(vertical = dimensionResource(R.dimen.list_row_horizontal_padding))
-            .fillMaxWidth()
+        modifier =
+            modifier
+                .padding(vertical = dimensionResource(R.dimen.list_row_horizontal_padding))
+                .fillMaxWidth(),
     ) {
         Column {
             Row(horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_padding))) {
@@ -57,15 +58,16 @@ fun TeamListItem(
             imageVector = if (checked) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
             contentDescription = stringResource(R.string.select_team_button),
             tint = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.clickable(
-                enabled = homeUiState.isEditing,
-                onClick = {
-                    if (homeViewModel.toggleSelectedTeam(team.id) != null) {
-                        checked = !checked
-                    }
-                },
-                role = Role.Checkbox,
-            )
+            modifier =
+                Modifier.clickable(
+                    enabled = homeUiState.isEditing,
+                    onClick = {
+                        if (homeViewModel.toggleSelectedTeam(team.id) != null) {
+                            checked = !checked
+                        }
+                    },
+                    role = Role.Checkbox,
+                ),
         )
     }
 }

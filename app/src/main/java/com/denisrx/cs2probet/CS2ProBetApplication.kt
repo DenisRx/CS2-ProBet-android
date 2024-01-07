@@ -11,7 +11,7 @@ import com.denisrx.cs2probet.data.UserPreferencesRepository
 
 private const val SCORE_PREFERENCE_NAME = "score_preferences"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-    name = SCORE_PREFERENCE_NAME
+    name = SCORE_PREFERENCE_NAME,
 )
 
 /*

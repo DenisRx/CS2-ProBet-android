@@ -21,13 +21,13 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Filled.CloudOff,
             contentDescription = stringResource(R.string.connection_error_icon_label),
             tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(dimensionResource(R.dimen.extra_large_icon_size))
+            modifier = Modifier.size(dimensionResource(R.dimen.extra_large_icon_size)),
         )
         Text(
             text = stringResource(R.string.leaderboard_loading_failed),

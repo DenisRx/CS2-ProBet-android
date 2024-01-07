@@ -2,9 +2,11 @@ package com.denisrx.cs2probet.ui.homeScreen
 
 import com.denisrx.cs2probet.model.Team
 
-sealed interface LeaderboardApiState{
+sealed interface LeaderboardApiState {
     data class Success(val leaderboard: List<Team>) : LeaderboardApiState
-    data object Error: LeaderboardApiState
+
+    data object Error : LeaderboardApiState
+
     data object Loading : LeaderboardApiState
 }
 

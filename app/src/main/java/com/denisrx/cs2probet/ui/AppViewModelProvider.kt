@@ -12,11 +12,12 @@ import com.denisrx.cs2probet.ui.homeScreen.HomeViewModel
  * Provides Factory to create instance of ViewModel for the entire app
  */
 object AppViewModelProvider {
-    val Factory = viewModelFactory {
-        initializer {
-            HomeViewModel(cs2ProBetApplication().container.teamRepository, cs2ProBetApplication().userPreferencesRepository)
+    val Factory =
+        viewModelFactory {
+            initializer {
+                HomeViewModel(cs2ProBetApplication().container.teamRepository, cs2ProBetApplication().userPreferencesRepository)
+            }
         }
-    }
 }
 
 /**

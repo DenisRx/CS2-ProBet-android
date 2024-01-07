@@ -14,14 +14,14 @@ abstract class TeamDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var Instance: TeamDatabase? = null
+        private var instance: TeamDatabase? = null
 
         fun getDatabase(context: Context): TeamDatabase {
-            return Instance ?: synchronized(this) {
+            return instance ?: synchronized(this) {
                 Room.databaseBuilder(context, TeamDatabase::class.java, "team_database")
                     .fallbackToDestructiveMigration()
                     .build()
-                    .also { Instance = it }
+                    .also { instance = it }
             }
         }
     }
