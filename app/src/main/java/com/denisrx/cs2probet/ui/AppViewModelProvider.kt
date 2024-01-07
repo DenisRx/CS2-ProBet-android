@@ -14,7 +14,7 @@ import com.denisrx.cs2probet.ui.homeScreen.HomeViewModel
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            HomeViewModel(cs2ProBetApplication().container.teamRepository)
+            HomeViewModel(cs2ProBetApplication().container.teamRepository, cs2ProBetApplication().userPreferencesRepository)
         }
     }
 }

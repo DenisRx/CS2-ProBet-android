@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.data.TeamRepository
+import com.denisrx.cs2probet.data.UserPreferencesRepository
 import com.denisrx.cs2probet.model.Team
 import com.denisrx.cs2probet.network.LeaderboardApi
 import com.denisrx.cs2probet.network.asDomainObjects
@@ -19,7 +20,10 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import kotlin.math.abs
 
-class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
+class HomeViewModel(
+    private val teamsRepository: TeamRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
+) : ViewModel() {
     private val maxSelectableTeams = 3
     private val correctPredictionPoints = 15
     private val wrongPredictionPoints = -5
@@ -30,6 +34,14 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         private set
 
     init {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    score = userPreferencesRepository.getScore(),
+                    scoreEvolution = userPreferencesRepository.getScoreEvolution(),
+                )
+            }
+        }
         loadLeaderboard()
         viewModelScope.launch { updateLeaderboard() }
     }
@@ -122,7 +134,6 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
 
         viewModelScope.launch {
             teamsRepository.getTeams().let { savedLeaderboard ->
-                println("passe ici")
                 savedLeaderboard
                     .filter { it.isSelected }
                     .forEach { team ->
@@ -143,6 +154,8 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
                         scoreEvolution = scoreEvolution,
                     )
                 }
+                userPreferencesRepository.saveScore(_uiState.value.score)
+                userPreferencesRepository.saveScoreEvolution(_uiState.value.scoreEvolution)
             }
         }
     }
