@@ -17,6 +17,9 @@ object LeaderboardApi {
     }
 }
 
+/**
+ * Service used to interact with the API
+ */
 interface LeaderboardApiService {
     @GET("leaderboard")
     suspend fun getLeaderboard(): List<ApiTeam>
