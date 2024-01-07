@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.denisrx.cs2probet.components.BottomNavigationBar
+import com.denisrx.cs2probet.navigation.BottomNavigationBar
 import com.denisrx.cs2probet.navigation.CS2ProBetScreen
 import com.denisrx.cs2probet.navigation.NavComponent
 
@@ -20,19 +20,22 @@ import com.denisrx.cs2probet.navigation.NavComponent
 fun CS2ProBetApp(navController: NavHostController = rememberNavController()) {
     var navigationSelectedItem by remember { mutableIntStateOf(0) }
 
-    val navActions: List<() -> Unit> = CS2ProBetScreen.entries.mapIndexed { index, navigationItem ->
-        {
-            navController.navigate(navigationItem.name) {launchSingleTop = true}
-            navigationSelectedItem = index
-        }
-    }
-
-    DisposableEffect(navController) {
-        val callback = NavController.OnDestinationChangedListener { _, destination, _ ->
-            navigationSelectedItem = CS2ProBetScreen.entries.toTypedArray().indexOfFirst {
-                it.name == destination.route
+    val navActions: List<() -> Unit> =
+        CS2ProBetScreen.entries.mapIndexed { index, navigationItem ->
+            {
+                navController.navigate(navigationItem.name) { launchSingleTop = true }
+                navigationSelectedItem = index
             }
         }
+
+    DisposableEffect(navController) {
+        val callback =
+            NavController.OnDestinationChangedListener { _, destination, _ ->
+                navigationSelectedItem =
+                    CS2ProBetScreen.entries.toTypedArray().indexOfFirst {
+                        it.name == destination.route
+                    }
+            }
         navController.addOnDestinationChangedListener(callback)
 
         onDispose {
