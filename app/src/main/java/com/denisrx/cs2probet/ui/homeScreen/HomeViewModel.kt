@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.denisrx.cs2probet.data.LeaderboardSampler
 import com.denisrx.cs2probet.data.TeamRepository
 import com.denisrx.cs2probet.data.UserPreferencesRepository
 import com.denisrx.cs2probet.model.Team
@@ -27,7 +26,7 @@ class HomeViewModel(
     private val maxSelectableTeams = 3
     private val correctPredictionPoints = 15
     private val wrongPredictionPoints = -5
-    private val _uiState = MutableStateFlow(HomeUiState(LeaderboardSampler.leaderboard))
+    private val _uiState = MutableStateFlow(HomeUiState())
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     var leaderboardApiState: LeaderboardApiState by mutableStateOf(LeaderboardApiState.Loading)
