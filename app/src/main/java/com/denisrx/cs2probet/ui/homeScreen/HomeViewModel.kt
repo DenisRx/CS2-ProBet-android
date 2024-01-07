@@ -66,6 +66,7 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(isEditing = false)
         }
+        viewModelScope.launch { saveLeaderboard() }
     }
 
     private fun getSelectedTeams(): List<Team> {
