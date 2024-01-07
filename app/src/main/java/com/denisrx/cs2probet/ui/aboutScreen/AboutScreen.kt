@@ -18,6 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.denisrx.cs2probet.R
 
+/**
+ * Screen to show information about the application such as the instruction.
+ * @param modifier The modifier to be applied to the [AboutScreen].
+ */
 @Composable
 fun AboutScreen(modifier: Modifier = Modifier) {
     Column(

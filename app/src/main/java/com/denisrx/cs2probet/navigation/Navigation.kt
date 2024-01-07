@@ -8,6 +8,9 @@ import androidx.navigation.compose.composable
 import com.denisrx.cs2probet.ui.aboutScreen.AboutScreen
 import com.denisrx.cs2probet.ui.homeScreen.HomeScreen
 
+/**
+ * Display the correct screen based on the [navController].
+ */
 @Composable
 fun NavComponent(
     navController: NavHostController,

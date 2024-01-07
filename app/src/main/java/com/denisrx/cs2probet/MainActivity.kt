@@ -10,6 +10,9 @@ import androidx.compose.ui.Modifier
 import com.denisrx.cs2probet.ui.CS2ProBetApp
 import com.denisrx.cs2probet.ui.theme.CS2ProBetTheme
 
+/**
+ * The [MainActivity] is the entry point of the project.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

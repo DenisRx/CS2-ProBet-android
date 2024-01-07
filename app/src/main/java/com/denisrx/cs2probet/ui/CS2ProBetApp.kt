@@ -16,6 +16,9 @@ import com.denisrx.cs2probet.navigation.BottomNavigationBar
 import com.denisrx.cs2probet.navigation.CS2ProBetScreen
 import com.denisrx.cs2probet.navigation.NavComponent
 
+/**
+ * This method is responsible for setting up the navigation controller and display the navigation bar.
+ */
 @Composable
 fun CS2ProBetApp(navController: NavHostController = rememberNavController()) {
     var navigationSelectedItem by remember { mutableIntStateOf(0) }

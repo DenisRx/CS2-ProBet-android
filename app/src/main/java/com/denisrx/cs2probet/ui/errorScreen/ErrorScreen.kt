@@ -16,6 +16,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.denisrx.cs2probet.R
 
+/**
+ * Component used to show information when an error occurred.
+ * @param modifier The modifier to be applied to the [ErrorScreen]
+ */
 @Composable
 fun ErrorScreen(modifier: Modifier = Modifier) {
     Column(

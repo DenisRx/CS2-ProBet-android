@@ -45,6 +45,10 @@ class HomeViewModel(
         viewModelScope.launch { updateLeaderboard() }
     }
 
+    /**
+     * Select or unselected a specific team.
+     * @param teamId Id of the team.
+     */
     fun toggleSelectedTeam(teamId: Int): Boolean? {
         var newSelectionState: Boolean? = null
 
@@ -69,12 +73,18 @@ class HomeViewModel(
         return newSelectionState
     }
 
+    /**
+     * Allow user to edit his team selection.
+     */
     fun editSelection() {
         _uiState.update { currentState ->
             currentState.copy(isEditing = true)
         }
     }
 
+    /**
+     * Save the user's team selection and disable any edition.
+     */
     fun confirmSelection() {
         _uiState.update { currentState ->
             currentState.copy(isEditing = false)
@@ -82,10 +92,17 @@ class HomeViewModel(
         viewModelScope.launch { saveLeaderboard() }
     }
 
+    /**
+     * Retrieve the list of selected teams.
+     * @returns The list of selected teams.
+     */
     private fun getSelectedTeams(): List<Team> {
         return _uiState.value.leaderboard.filter { it.isSelected }
     }
 
+    /**
+     * Fetch real-time leaderboard data from API asynchronously and store the API state.
+     */
     private suspend fun fetchLeaderboard() {
         leaderboardApiState =
             try {
@@ -97,6 +114,9 @@ class HomeViewModel(
             }
     }
 
+    /**
+     * Load leaderboard from user device and update UI.
+     */
     private fun loadLeaderboard() {
         viewModelScope.launch {
             teamsRepository.getTeams().let { savedLeaderboard ->
@@ -110,10 +130,17 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Save leaderboard content to the user device.
+     */
     private suspend fun saveLeaderboard() {
         teamsRepository.replaceTeams(_uiState.value.leaderboard)
     }
 
+    /**
+     * Compare the actual and fetched leaderboard from API.
+     * If they are different, update the score, leaderboard and save it to the user's device.
+     */
     private suspend fun updateLeaderboard() {
         viewModelScope.async { fetchLeaderboard() }.await()
 
@@ -127,10 +154,18 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Compare a given leaderboard with the current one.
+     */
     private fun compareLeaderboard(newLeaderboard: List<Team>): Boolean {
         return newLeaderboard == _uiState.value.leaderboard
     }
 
+    /**
+     * Update the user score based on the user's team selection.
+     * The previously stored leaderboard with team selection is compared with the new one.
+     * Score and scoreEvolution are updated in the UI, and saved to the user device.
+     */
     private fun updateScore(newLeaderboard: List<Team>) {
         var scoreEvolution = 0
 

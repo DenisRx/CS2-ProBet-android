@@ -32,6 +32,11 @@ import com.denisrx.cs2probet.ui.AppViewModelProvider
 import com.denisrx.cs2probet.ui.errorScreen.ErrorScreen
 import com.denisrx.cs2probet.ui.loadingScreen.LoadingScreen
 
+/**
+ * Main screen displaying the correct content depending on the loading state.
+ * @param modifier The modifier to be applied to the [HomeScreen].
+ * @param homeViewModel The [HomeViewModel] used to update the UI.
+ */
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -51,6 +56,12 @@ fun HomeScreen(
     }
 }
 
+/**
+ * Content displayed on the [HomeScreen] containing the score and leaderboard.
+ * @param homeViewModel The [HomeViewModel] used to update the UI.
+ * @param homeUiState The [HomeUiState] used to retrieve the logic data.
+ * @param modifier The modifier to be applied to the [HomeScreenContent].
+ */
 @Composable
 fun HomeScreenContent(
     homeViewModel: HomeViewModel,
@@ -89,6 +100,13 @@ fun HomeScreenContent(
     }
 }
 
+/**
+ * Component responsible for displaying the leaderboard.
+ * The leaderboard is a scrollable list of teams, which can be selected/unselected.
+ * @param homeViewModel The [HomeViewModel] used to update the UI.
+ * @param homeUiState The [HomeUiState] used to retrieve the logic data.
+ * @param modifier The modifier to be applied to the [Leaderboard].
+ */
 @Composable
 fun Leaderboard(
     homeViewModel: HomeViewModel,
@@ -113,6 +131,14 @@ fun Leaderboard(
     }
 }
 
+/**
+ * The editions buttons are displayed regarding the edition status.
+ * When the user is editing his team selection, the confirm button appears.
+ * Otherwise, an "edit" button is displayed the rest of the time.
+ * @param homeViewModel The [HomeViewModel] used to update the UI.
+ * @param homeUiState The [HomeUiState] used to retrieve the logic data.
+ * @param modifier The modifier to be applied to the [EditionButtons].
+ */
 @Composable
 fun EditionButtons(
     homeViewModel: HomeViewModel,
@@ -159,6 +185,11 @@ fun EditionButtons(
     }
 }
 
+/**
+ * Component used to display the score information.
+ * The user score is shown as a title and a description with the score evolution appears below.
+ * @param homeUiState The [HomeUiState] used to retrieve the logic data.
+ */
 @Composable
 fun Scores(homeUiState: HomeUiState) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -177,6 +208,12 @@ fun Scores(homeUiState: HomeUiState) {
     }
 }
 
+/**
+ * Formats the score evolution depending on its positiveness.
+ * When the score evolution is positive or equal to zero, it's rendered preceded by a "+" sign.
+ * @param value Score evolution to format
+ * @returns The formatted score evolution as a string
+ */
 private fun formatScoreEvolution(value: Int): String {
     return if (value >= 0) {
         "+$value"
