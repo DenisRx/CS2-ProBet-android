@@ -11,4 +11,5 @@
     <dimen name="elevated_buttons_default_elevation">8dp</dimen>
     <dimen name="elevated_buttons_pressed_elevation">10dp</dimen>
     <dimen name="extra_large_icon_size">48dp</dimen>
+    <dimen name="logo_size_about_screen">100dp</dimen>
 </resources>
