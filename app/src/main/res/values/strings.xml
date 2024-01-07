@@ -8,4 +8,6 @@
     <string name="score">Score: %1$s</string>
     <string name="application_logo_description">application logo</string>
     <string name="app_instructions">This is CS2-ProBet, a game where you can bet on professional Counter-Strike2 teams ranking.\n\nEach week, you can select at most 3 teams, and when the world ranking updates, you win points whether your selected teams go up on the scoreboard.\n\nThe update usually takes place on Monday evening. Throughout the week, you are free to change your picks as much as you want.</string>
+    <string name="home_screen_nav_title">Ranking</string>
+    <string name="about_screen_nav_title">About</string>
 </resources>

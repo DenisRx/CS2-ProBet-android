@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.denisrx.cs2probet.ui.homeScreen.HomeScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.denisrx.cs2probet.navigation.NavComponent
 
 @Composable
-fun CS2ProBetApp() {
+fun CS2ProBetApp(navController: NavHostController = rememberNavController()) {
     Scaffold { innerPadding ->
-        HomeScreen(modifier = Modifier.padding(innerPadding))
+        NavComponent(navController, modifier = Modifier.padding(innerPadding))
     }
 }
