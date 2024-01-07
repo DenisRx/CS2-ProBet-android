@@ -16,7 +16,7 @@ interface TeamRepository {
     /**
      * Retrieve all the teams from the given data source.
      */
-    fun getTeams(): Flow<List<Team>>
+    suspend fun getTeams(): List<Team>
 
     /**
      * Clear table and save teams in the data source
@@ -25,7 +25,7 @@ interface TeamRepository {
 }
 
 class CachingTeamRepository(private val teamDao: TeamDao, context: Context) : TeamRepository {
-    override fun getTeams(): Flow<List<Team>> = teamDao.getAll().map { it.asTeamList() }
+    override suspend fun getTeams(): List<Team> = teamDao.getAll().asTeamList()
 
     override suspend fun replaceTeams(teams: List<Team>) = teamDao.replaceAll(teams.asTeamEntityList())
 }

@@ -84,7 +84,7 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
 
     private fun loadLeaderboard() {
         viewModelScope.launch {
-            teamsRepository.getTeams().collect { savedLeaderboard ->
+            teamsRepository.getTeams().let { savedLeaderboard ->
                 if (savedLeaderboard.isNotEmpty()) {
                     _uiState.update { currentState ->
                         currentState.copy(leaderboard = savedLeaderboard)
@@ -120,7 +120,8 @@ class HomeViewModel(private val teamsRepository: TeamRepository) : ViewModel() {
         var scoreEvolution = 0
 
         viewModelScope.launch {
-            teamsRepository.getTeams().collect { savedLeaderboard ->
+            teamsRepository.getTeams().let { savedLeaderboard ->
+                println("passe ici")
                 savedLeaderboard
                     .filter { it.isSelected }
                     .forEach { team ->
