@@ -13,11 +13,7 @@ import androidx.compose.ui.res.stringResource
 import com.denisrx.cs2probet.navigation.CS2ProBetScreen
 
 @Composable
-fun BottomNavigationBar(actions: List<() -> Unit>) {
-    var navigationSelectedItem by remember {
-        mutableIntStateOf(0)
-    }
-
+fun BottomNavigationBar(actions: List<() -> Unit>, navigationSelectedItem: Int) {
     NavigationBar {
         CS2ProBetScreen.entries.forEachIndexed { index, navigationItem ->
             NavigationBarItem(
@@ -30,7 +26,6 @@ fun BottomNavigationBar(actions: List<() -> Unit>) {
                     )
                 },
                 onClick = {
-                    navigationSelectedItem = index
                     actions[index]()
                 }
             )
